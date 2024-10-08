@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 const Users = ({ state }) => {
   const { contract } = state;
   const [users, setUsers] = useState([]);
@@ -12,7 +12,7 @@ const Users = ({ state }) => {
         const totalUsers = await contract?.getUsers();
         setUsers(totalUsers);
       } catch (error) {
-        toast.error('Error fetching users:');
+        toast.error("Error fetching users:");
       }
     };
 
@@ -20,30 +20,35 @@ const Users = ({ state }) => {
     contract && getUsers();
   }, [contract]);
 
-
-
   const DeleteUser = async (id) => {
     try {
       const tx = await contract?.deleteUser(id);
-      toast.warning('Wait for Delete Transaction to be mined...');
-      const receipts = await tx.wait();
-      toast.success('Deleted Successful');
+      toast.warning("Wait for Delete Transaction to be mined...");
+      await tx.wait();
+      toast.success("Deleted Successful");
     } catch (error) {
-      toast.error('Error while deleting user');
+      toast.error("Error while deleting user");
     }
   };
 
   return (
     <div className="container mt-5">
-      <h3 className="my-5 text-center ">Users - Decentralized Application by using Blockchain Technology </h3>
+      <h3 className="my-5 text-center ">
+        Users - Decentralized Application by using Blockchain Technology{" "}
+      </h3>
 
       <div className="d-flex justify-content-between mt-5 mb-3">
         <div>
           <h4>List of Users</h4>
           <div>
             <p>
-              Show Deleted Users :{' '}
-              <input type="checkbox" id="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+              Show Deleted Users :{" "}
+              <input
+                type="checkbox"
+                id="checkbox"
+                checked={isChecked}
+                onChange={() => setIsChecked(!isChecked)}
+              />
             </p>
           </div>
           <p>connected account: {state?.signer?.address}</p>
@@ -77,25 +82,30 @@ const Users = ({ state }) => {
         <tbody>
           {users &&
             users.map((user, index) => {
-              if (isChecked || !user.uid == 0) {
+              if (isChecked || user.uid) {
                 return (
-                  <tr>
-                    <th class="p-3" scope="row">
+                  <tr key={user.uid || index}>
+                    <th className="p-3" scope="row">
                       {index + 1}
                     </th>
-                    <td class="p-3">{user.name ? user.name : 'Deleted Data From Block'}</td>
-                    <td class="p-3">{user.age + ''}</td>
-                    <td class="p-3">{user.uid + ''}</td>
-                    <td class="p-3 w-25">
+                    <td className="p-3">
+                      {user.name ? user.name : "Deleted Data From Block"}
+                    </td>
+                    <td className="p-3">{user.age + ""}</td>
+                    <td className="p-3">{user.uid + ""}</td>
+                    <td className="p-3 w-25">
                       <NavLink to={`/updateuser/${user.uid}`}>
-                        <button className="btn btn-primary" disabled={user.uid == 0}>
+                        <button
+                          className="btn btn-primary"
+                          disabled={!user.uid}
+                        >
                           Update
                         </button>
                       </NavLink>
                       <button
                         className="btn btn-danger ms-3"
                         onClick={() => DeleteUser(user.uid)}
-                        disabled={user.uid == 0}
+                        disabled={!user.uid}
                       >
                         Delete
                       </button>
@@ -103,6 +113,7 @@ const Users = ({ state }) => {
                   </tr>
                 );
               }
+              return null; // Ensure that map always returns a value
             })}
         </tbody>
       </table>

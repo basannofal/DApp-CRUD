@@ -12,18 +12,16 @@ function App() {
     contract: null,
   });
 
-  const [account, setAccount] = useState('None');
 
   useEffect(() => {
     const connectWallet = async () => {
       const contractAddress = '0xb886881eef300B9171EA8180a48C797Ab345c18b';
-      const contractABI = ABIData?.abi;
 
       try {
         const { ethereum } = window;
         console.log(ethereum)
         if (ethereum) {
-          const accountData = await ethereum.request({ method: 'eth_requestAccounts' });
+          await ethereum.request({ method: 'eth_requestAccounts' });
 
           window.ethereum.on('chainChanged', () => {
             window.location.reload();
@@ -39,7 +37,6 @@ function App() {
           const myContract = new ethers.Contract(contractAddress, ABIData?.abi, signer);
           console.log(myContract)
           setState({ provider, signer, contract: myContract });
-          setAccount(accountData[0]);
         }else{
           alert('Please install metamask');
         }

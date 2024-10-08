@@ -76,14 +76,14 @@ const AddUser = ({ state }) => {
 
             <div className='pt-5'>
               {
-                status == 1 && 
+                status === 1 && 
                 <>
                 <p className='text-success'>Transaction in progress... you can leave this page</p>
                 <button className='btn btn-primary' onclick={() => navigate('/')}>Go Home</button>
                 </>
               }
               {
-                status == 2 &&
+                status === 2 &&
                 <> 
                   <p className='text-success'>Transaction Hash: {receipt?.blockHash}</p>
                 </>
