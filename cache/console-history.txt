@@ -1,0 +1,7 @@
+console.log(currentNonce1);
+const currentNonce1 = await ethers.provider.getTransactionCount("0x3C4a59Cf6C1DDb86Cc664613DcF53a9EF71e1277", "pending");
+console.log(currentNonce);
+const currentNonce = await ethers.provider.getTransactionCount("0x3C4a59Cf6C1DDb86Cc664613DcF53a9EF71e1277", "latest");
+const nonce = await provider.getTransactionCount("0x3C4a59Cf6C1DDb86Cc664613DcF53a9EF71e1277", "pending");
+console.log(pendingTxs);
+const pendingTxs = await ethers.provider.getTransactionCount("0x3C4a59Cf6C1DDb86Cc664613DcF53a9EF71e1277", "pending");
